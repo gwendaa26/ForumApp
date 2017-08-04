@@ -1,0 +1,389 @@
+<html>
+<head>
+	<link rel="stylesheet" href="css/onsenui.css">
+	<link rel="stylesheet" href="css/onsen-css-components.min.css">
+	<link rel="stylesheet" href="css/index.css">
+	<script src="js/onsenui.min.js"></script>
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/index.js"></script>
+
+	<!--
+	 Gwenda Hasnaa Sarri - 214441847
+	 In assignment 1, I create a cross platform application, named Forum. In here,
+	 the user can share their thoughts in a discussion forum. They can get the
+	 information and knowledge by joining this Forum application.
+	 This is a version 1.0 with features:
+	 		1. Add new topic
+			2. Reply the user's answer and the topic
+			3. Choose topic to read and discuss.
+			4. View user's profile
+	 To build this cross platform application, I used cordova. Basically, I built
+	 in iOS platform that assisted by Onsen UI.
+	 In the first assignment, it still works in UI (User Interface) of the application.
+	 https://tutorial.onsen.io
+ -->
+
+</head>
+<body>
+
+<!--This codes used to show the side bar navigation with the list of three menus.
+		There are:
+		Accounts - The user can access and use the features in Forum application.
+		Home - The list of forum discussion.
+		About - The explanation about Forum application and the developer.
+		https://tutorial.onsen.io/?framework=vanilla&category=reference&module=splitter
+-->
+
+	<ons-page>
+	<ons-splitter>
+  <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+    <ons-page>
+
+			<!-- The list of three menus in side bar navigation. -->
+      <ons-list>
+				<ons-list-item onclick="fn.load('login.html')" tappable>
+					<!-- fn.load code is an internal link used to go to the next page. -->
+
+					<img src="img/logo.png" class="image" style="margin-right:10px; width: 80px">
+					<!--Inside of account column, it embedded a profile picture that used
+						to introduce the user, when the user's already sign in the application. -->
+
+					 Account
+				</ons-list-item>
+        <ons-list-item onclick="fn.load('home.html')" tappable>
+          Home
+        </ons-list-item>
+        <ons-list-item onclick="fn.load('about.html')" tappable>
+          About
+        </ons-list-item>
+      </ons-list>
+    </ons-page>
+  </ons-splitter-side>
+  <ons-splitter-content id="content" page="account.html"></ons-splitter-content>
+</ons-splitter>
+</ons-page>
+
+
+<!-- This code below shows to keep the side navigation bar clickable in the pages, while
+user was back from other pages.-->
+<ons-template id="account.html">
+  <ons-page id="accountPage">
+    <ons-navigator swipeable id="myNavigator" page="home.html"></ons-navigator>
+  </ons-page>
+</ons-template>
+
+------------------------------------
+<!-- ACCOUNT PAGE -->
+<!-- This is the first page. An account page. In here, the user can sign in the application
+for those who already had an account. If no, they can register a new account, in order they
+can access this application by clicking a "Join Now" button -->
+<ons-template id="login.html">
+  <ons-page id = "login">
+    <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        Account
+      </div>
+    </ons-toolbar>
+<center><img src="img/signin.png" alt="image" style="margin-top: 10px;"/></center>
+			<div style="text-align: center; margin-top: 50px;">
+
+ <!-- This code below shows two text inputs as Username and Password, which used to when the
+user sign in the application. The idea is from Onsen UI
+https://tutorial.onsen.io/?framework=vanilla&category=reference&module=input-->
+		<p>
+      <ons-input id="username" modifier="underbar" placeholder="Username or Email" float></ons-input>
+    </p>
+    <p>
+      <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
+    </p>
+    <p style="margin-top: 30px;">
+      <ons-button onclick="login()">Sign in</ons-button>
+    </p>
+		<p>or</p>
+
+<!-- This code below is a button for the user who hadn't the account yet. They need to register by clicking
+this button and will be directed to register page. -->
+		<p style="margin-top: 25px;">
+			<ons-button id="push-button">Join Now</ons-button>
+					</p>
+  </div>
+</ons-page>
+	</ons-template>
+
+<!-- END OF ACCOUNT PAGE -->
+
+
+<!-- REGISTER PAGE -->
+<!-- As I wrote before, a register page is used to the user who hadn't the account yet. The template is
+similar as a sign in page. -->
+	<template id="register.html">
+	  <ons-page id="register">
+	    <ons-toolbar>
+	      <div class="left"><ons-back-button></ons-back-button></div>
+	      <div class="center"></div>
+	    </ons-toolbar>
+			<center><img src="img/register.png" alt="image" style="margin-top: 10px;"/></center>
+						<div style="text-align: center; margin-top: 50px;">
+					<p>
+			      <ons-input id="username" modifier="underbar" placeholder="Username" float></ons-input>
+			    </p>
+			    <p>
+			      <ons-input id="email" modifier="underbar" type="email" placeholder="Email address" float></ons-input>
+			    </p>
+					<p>
+			      <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
+			    </p>
+			    <p style="margin-top: 30px;">
+			      <ons-button onclick="login()">Register</ons-button>
+			    </p>
+</div>
+				</ons-page>
+	</template>
+	<!-- END OF REGISTER PAGE -->
+
+
+<!-- FORUM PAGE -->
+<!-- This page is a second page from Forum application. Here, the user can see the discussion list that
+the user can read and join to share the ideas about the topic. Also, the user can add a new topic, so other users
+can join their new discussion. -->
+<ons-template id="home.html">
+  <ons-page id="forum">
+    <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+      <div class="center">
+        Forums
+      </div>
+
+			<!-- This code is an add button to add a new topic of disccusion and appear in forum list.
+					 The user will be brought to createnew.html to input the data-->
+			<div class="right">
+		 <ons-toolbar-button onclick="fn.load('createnew.html')" > + </ons-toolbar-button>
+	 </div>
+    </ons-toolbar>
+				<center><img src="img/forum1.png" alt="image"/></center>
+				<ons-search-input placeholder="Search" style="width: 100%; padding: 0 8px 8px;">
+				</ons-search-input>
+				<ons-list modifier="inset">
+	 <ons-list-header>Wednesday, 2nd August 2017</ons-list-header>
+
+	 	<!-- The user can click one of the list to read the topic discussion. The idea or creating
+				 the list is from Onsen UI https://tutorial.onsen.io/?framework=vanilla&category=reference&module=list-->
+	 <ons-list-item modifier="chevron" onclick="fn.load('pageforum1.html')" tappable>
+		 <h3>Introduction to Forum</h3>
+		 <p>Welcome to Forum application. In here, you can share your ideas about
+				 the exist topics. Read more..</p>
+	 </ons-list-item>
+	 <ons-list-item modifier="chevron" tappable>
+		<h3>SIT 313 - Mobile Computing</h3>
+		<p>Share your thoughts here everything related to this unit. Read more..</p>
+	</ons-list-item>
+ </ons-list>
+	</ons-page>
+</ons-template>
+
+<!-- END OF FORUM PAGE -->
+
+
+<!-- A TOPIC PAGE -->
+<!-- This page declares the information about the discussion topic when the user click from the list.
+ The user can create a new post related to the topic and reply another user's post. The template
+is similar to Forum Page.-->
+<template id="pageforum1.html">
+	<ons-page id="forum1">
+		<ons-toolbar>
+			<div class="left"><ons-back-button></ons-back-button></div>
+			<div class="center">
+				Forums
+			</div>
+			<div class="right">
+		 <ons-toolbar-button onclick="fn.load('createnewdiscussion.html')" > + </ons-toolbar-button>
+	 </div>
+		</ons-toolbar>
+		<center><img src="img/forum1.png" alt="image" style="margin-top: 10px;"/></center>
+					<div style="text-align: center; margin-top: 20px;">
+				<h1> Introduction to Forum </h1>
+				<center><img src="img/forum.png" alt="image" style="margin-top: 10px;"/></center>
+				<p>Welcome to Forum application. In here, you can share your ideas about
+	 				 the exist topics. Please introduce yourself, so we can know each other.
+				<p> </div>
+					<ons-list modifier="inset">
+		 <ons-list-header>Wednesday, 2nd August 2017</ons-list-header>
+
+		 <!-- The list will appear a small image or icon to indicate as a user-->
+		 <ons-list-item modifier="longdivider">
+			 <div class="left">
+        <img class="list-item__thumbnail" src="img/gwendahasnaa.jpg">
+      </div>
+      <div class="center">
+        <span class="list-item__title">
+						<h3 onclick="fn.load('userpage.html')">Gwenda Hasnaa Sarri</h3>
+				<hr></hr>
+				</span><span class="list-item__subtitle">Hi, my name is Gwenda Hasnaa Sarri. I am studying Bachelor of Information Technology
+	 			at Deakin University majoring Mobile and Apps Development and Interactive Media Design
+				<hr></hr>
+
+				<!-- Another user can reply the user's post by clicking a Reply button.-->
+				<div style="float: right;">
+				<ons-button modifier="quiet" onclick="fn.load('createnewdiscussion.html')">Reply</ons-button>
+			</div>
+			</span>
+      </div>
+ 			</ons-list-item>
+	 </ons-list>
+					  </ons-page>
+</template>
+
+<!-- END OF A TOPIC PAGE -->
+
+
+<!-- USER PAGE -->
+<!-- This page shows the user's page. It displays user's username and email.
+Another user can follow them and send a direct message in personaly. This page will
+appear when the user click user's name in post discussion list. -->
+<template id="userpage.html">
+	<ons-page id="user">
+		<ons-toolbar>
+			<div class="left"><ons-back-button></ons-back-button></div>
+			<div class="center">
+				Profile
+			</div>
+		</ons-toolbar>
+		<center><img src="img/forum1.png" alt="image" style="margin-top: 10px;"/>
+		<h3>Your profile</h3></center>
+					<div style="text-align: center; margin-top: 25px; ">
+						<center><img src="img/gwendahasnaa.jpg" id="circle" alt="image"/></center>
+						<h3>Gwenda Hasnaa Sarri</h3>
+						<p> Username: gwendaa26
+						<br> Email: gwendahasnaa26@gmail.com </br>
+					</p>
+				<ons-button>Follow</ons-button>
+				<ons-button>Direct Message</ons-button>
+</div>
+					  </ons-page>
+</template>
+
+<!-- END OF USER PAGE -->
+
+
+<!-- CREATE A NEW DISCUSSION PAGE-->
+<!-- This page is to create a new discussion when the user clicked an add button
+		 in a forum page. If the user has an idea to share some topic, they can create
+	 	 a new discussion by entering a title and description. Then, they can share it.-->
+<template id="createnew.html">
+	<ons-page id="create">
+		<ons-toolbar>
+			<div class="left"><ons-back-button></ons-back-button></div>
+			<div class="center">
+				Create new thread
+			</div>
+		</ons-toolbar>
+		<center><img src="img/forum1.png" alt="image" style="margin-top: 10px;"/>
+		<h3>Create new thread</h3></center>
+					<div style="text-align: center; margin-top: 50px; ">
+				</div>
+
+				<!-- The idea of creating a textarea for a description section is from Codepen.com
+						https://codepen.io/anon/pen/XajaNm?editors=1010-->
+				<section style="padding: 0 10px 10px;">
+				<ons-input id="title" modifier="underbar" placeholder="Title" style="width: 100%;" float></ons-input>
+				<p> </section>
+					<section style="padding: 0 10px 10px;">
+			 <textarea class="textarea" id="description" ng-model="text" placeholder="Description" style="width: 100%; height: 100px;"></textarea>
+		 	</section>
+
+
+			<!-- When the user finished entering data, they can share it by clicking Share button.
+		 			 It will appear a confirm dialog to ensure the user shares their new post.
+				 	 The idea of appearing confirm dialog is from Onsen UI
+					 https://tutorial.onsen.io/?framework=vanilla&category=reference&module=dialog
+				 		-->
+			<div class="right" style="padding: 0 10px 10px; float: right;">
+				<ons-button onclick="ons.notification.confirm({message: 'Are you sure want to share?'})">Share</ons-button>
+		</div>
+		</p>
+					  </ons-page>
+</template>
+
+<!-- END OF CREATE NEW DISCUSSION PAGE -->
+
+
+<!-- REPLY DISCUSSION PAGE-->
+<!-- This page is same to a create a new discussion page. However, this page
+		connects from an add button from a topic page, which used as a reply the discussion.-->
+<template id="createnewdiscussion.html">
+	<ons-page id="create">
+		<ons-toolbar>
+			<div class="left"><ons-back-button></ons-back-button></div>
+			<div class="center">
+				Reply
+			</div>
+		</ons-toolbar>
+		<center><img src="img/forum1.png" alt="image" style="margin-top: 10px;"/>
+		<h3>Reply the discussion</h3></center>
+					<div style="text-align: center; margin-top: 50px; ">
+				</div>
+				<section style="padding: 0 10px 10px;">
+				<ons-input id="title" modifier="underbar" placeholder="Title" style="width: 100%;" float></ons-input>
+				<p> </section>
+					<section style="padding: 0 10px 10px;">
+			 <textarea class="textarea" id="description" ng-model="text" placeholder="Description" style="width: 100%; height: 100px;"></textarea>
+		 	</section>
+			<div class="right" style="padding: 0 10px 10px; float: right;">
+				<ons-button onclick="ons.notification.confirm({message: 'Are you sure want to share?'})">Share</ons-button>
+		</div>
+							</p>
+					  </ons-page>
+</template>
+
+<!-- END OF REPLY PAGE -->
+
+
+<!-- ABOUT PAGE -->
+<!-- This page is the explanation about the Forum application and the developer. It only shows
+		 the description and images for both sections.-->
+<ons-template id="about.html">
+  <ons-page>
+    <ons-toolbar>
+      <div class="left">
+        <ons-toolbar-button onclick="fn.open()">
+          <ons-icon icon="md-menu"></ons-icon>
+        </ons-toolbar-button>-
+      </div>
+      <div class="center">
+        About
+      </div>
+    </ons-toolbar>
+					<center><h1> Welcome to Forum </h1>
+						<img src="img/forum.png" alt="image">
+					<p>Forum is an application that anyone can share their thoughts in
+						the list of discussion forums. In here, the user can find the useful information
+					 and knowledge as you needed.</p>
+					</center>
+				</div>
+								<center><h1>About Developer</h1>
+									<img src="img/gwendahasnaa.jpg" alt="image"/>
+								<p> Hi, My name is Gwenda Hasnaa Sarri. I am currently studying
+									Bachelor of Information Technology at Deakin University majoring
+									Mobile and Apps Development and Interactive Media Design.
+									This Forum application is an assignment from SIT - 313
+									Mobile Computing </p>
+								</center>
+							</div>
+  </ons-page>
+</ons-template>
+
+<!-- END OF ABOUT PAGE -->
+
+</div>
+
+</body>
+</html>
