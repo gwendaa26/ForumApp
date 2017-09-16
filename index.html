@@ -6,6 +6,8 @@
 	<script src="js/onsenui.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/index.js"></script>
+	<meta charset="UTF-8">
+
 
 	<!--
 	 Gwenda Hasnaa Sarri - 214441847
@@ -36,24 +38,18 @@
 
 	<ons-page>
 	<ons-splitter>
-  <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+  <ons-splitter-side id="menu" side="left" width="220px"  collapse swipeable>
     <ons-page>
-
 			<!-- The list of three menus in side bar navigation. -->
-      <ons-list>
-				<ons-list-item onclick="fn.load('login.html')" tappable>
+      <ons-list style="background-color: #2c3e50;">
+				<ons-list-item onclick="fn.load('login.html')" style="color:#ecf0f1;"tappable>
 					<!-- fn.load code is an internal link used to go to the next page. -->
-
-					<img src="img/logo.png" class="image" style="margin-right:10px; width: 80px">
-					<!--Inside of account column, it embedded a profile picture that used
-						to introduce the user, when the user's already sign in the application. -->
-
 					 Account
 				</ons-list-item>
-        <ons-list-item onclick="fn.load('home.html')" tappable>
+        <ons-list-item onclick="fn.load('home.html')" style="color:#ecf0f1;"tappable>
           Home
         </ons-list-item>
-        <ons-list-item onclick="fn.load('about.html')" tappable>
+        <ons-list-item onclick="fn.load('about.html')" style="color:#ecf0f1;"tappable>
           About
         </ons-list-item>
       </ons-list>
@@ -67,7 +63,7 @@
 <!-- This code below shows to keep the side navigation bar clickable in the pages, while
 user was back from other pages.-->
 <ons-template id="account.html">
-  <ons-page id="accountPage">
+  <ons-page id="accountPage" >
     <ons-navigator swipeable id="myNavigator" page="home.html"></ons-navigator>
   </ons-page>
 </ons-template>
@@ -79,13 +75,13 @@ for those who already had an account. If no, they can register a new account, in
 can access this application by clicking a "Join Now" button -->
 <ons-template id="login.html">
   <ons-page id = "login">
-    <ons-toolbar>
+    <ons-toolbar style="background-color: #f39c12;">
       <div class="left">
-        <ons-toolbar-button onclick="fn.open()">
+        <ons-toolbar-button onclick="fn.open()" style="color:#2C3E50;">
           <ons-icon icon="md-menu"></ons-icon>
         </ons-toolbar-button>
       </div>
-      <div class="center">
+      <div class="center" style="color:#2c3e50;">
         Account
       </div>
     </ons-toolbar>
@@ -95,14 +91,15 @@ can access this application by clicking a "Join Now" button -->
  <!-- This code below shows two text inputs as Username and Password, which used to when the
 user sign in the application. The idea is from Onsen UI
 https://tutorial.onsen.io/?framework=vanilla&category=reference&module=input-->
-		<p>
-      <ons-input id="username" modifier="underbar" placeholder="Username or Email" float></ons-input>
-    </p>
-    <p>
-      <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
-    </p>
+<p>
+		<ons-input id="username" modifier="underbar" placeholder="Username" float ng-model="page.username"></ons-input>
+	</p>
+
+	<p>
+		<ons-input id="password" modifier="underbar" type="password" placeholder="Password" float ng-model="page.password"></ons-input>
+  </p>
     <p style="margin-top: 30px;">
-      <ons-button onclick="login()">Sign in</ons-button>
+      <ons-button id="button" onclick="login()">Sign in</ons-button>
     </p>
 		<p>or</p>
 
@@ -123,23 +120,23 @@ this button and will be directed to register page. -->
 similar as a sign in page. -->
 	<template id="register.html">
 	  <ons-page id="register">
-	    <ons-toolbar>
-	      <div class="left"><ons-back-button></ons-back-button></div>
-	      <div class="center"></div>
+	    <ons-toolbar style="background-color: #f39c12;">
+	      <div class="left"><ons-back-button style="color:#2C3E50;"></ons-back-button></div>
+	      <div class="center" style="color:#2c3e50;"></div>
 	    </ons-toolbar>
 			<center><img src="img/register.png" alt="image" style="margin-top: 10px;"/></center>
 						<div style="text-align: center; margin-top: 50px;">
 					<p>
-			      <ons-input id="username" modifier="underbar" placeholder="Username" float></ons-input>
+			      <ons-input id="regUsername" modifier="underbar" placeholder="Username" float></ons-input>
 			    </p>
 			    <p>
-			      <ons-input id="email" modifier="underbar" type="email" placeholder="Email address" float></ons-input>
+			      <ons-input id="regEmail" modifier="underbar" type="email" placeholder="Email address" float></ons-input>
 			    </p>
 					<p>
-			      <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
+			      <ons-input id="regPassword" modifier="underbar" type="password" placeholder="Password" float></ons-input>
 			    </p>
 			    <p style="margin-top: 30px;">
-			      <ons-button onclick="login()">Register</ons-button>
+			      <ons-button id="button" onclick="register()">Register</ons-button>
 			    </p>
 </div>
 				</ons-page>
@@ -153,40 +150,49 @@ the user can read and join to share the ideas about the topic. Also, the user ca
 can join their new discussion. -->
 <ons-template id="home.html">
   <ons-page id="forum">
-    <ons-toolbar>
+    <ons-toolbar style="background-color: #f39c12;">
       <div class="left">
-        <ons-toolbar-button onclick="fn.open()">
+        <ons-toolbar-button onclick="fn.open()" style="color:#2C3E50;">
           <ons-icon icon="md-menu"></ons-icon>
         </ons-toolbar-button>
       </div>
-      <div class="center">
+      <div class="center" style="color:#2c3e50;">
         Forums
       </div>
 
 			<!-- This code is an add button to add a new topic of disccusion and appear in forum list.
 					 The user will be brought to createnew.html to input the data-->
 			<div class="right">
-		 <ons-toolbar-button onclick="fn.load('createnew.html')" > + </ons-toolbar-button>
+		 <ons-toolbar-button onclick="fn.load('createnew.html')"style="color:#2C3E50;" > + </ons-toolbar-button>
 	 </div>
     </ons-toolbar>
 				<center><img src="img/forum1.png" alt="image"/></center>
 				<ons-search-input placeholder="Search" style="width: 100%; padding: 0 8px 8px;">
 				</ons-search-input>
-				<ons-list modifier="inset">
-	 <ons-list-header>Wednesday, 2nd August 2017</ons-list-header>
+				<ons-list modifier="inset" >
+	 <ons-list-header>Wednesday, 2 August 2017</ons-list-header>
 
 	 	<!-- The user can click one of the list to read the topic discussion. The idea or creating
 				 the list is from Onsen UI https://tutorial.onsen.io/?framework=vanilla&category=reference&module=list-->
-	 <ons-list-item modifier="chevron" onclick="fn.load('pageforum1.html')" tappable>
-		 <h3>Introduction to Forum</h3>
-		 <p>Welcome to Forum application. In here, you can share your ideas about
+	 <ons-list-item modifier="chevron" onclick="fn.load('pageforum1.html')" tappable id ="addToList">
+		 <h3 >Introduction to Forum </h3>
+		 <p >Welcome to Forum application. In here, you can share your ideas about
 				 the exist topics. Read more..</p>
 	 </ons-list-item>
 	 <ons-list-item modifier="chevron" tappable>
-		<h3>SIT 313 - Mobile Computing</h3>
+		<h3 >SIT 313 - Mobile Computing</h3>
 		<p>Share your thoughts here everything related to this unit. Read more..</p>
 	</ons-list-item>
  </ons-list>
+
+ <ons-list modifier="inset" id ="addToList">
+ <ons-list-header id="Addtime"></ons-list-header>
+ <ons-list-item modifier="chevron" id="newForum" onclick = "fn.load('pageforum2.html')" tappable>
+  <h3 id="titleList"></h3>
+  <p id = "descriptionList"></p>
+ </ons-list-item>
+</ons-list>
+
 	</ons-page>
 </ons-template>
 
@@ -199,22 +205,71 @@ can join their new discussion. -->
 is similar to Forum Page.-->
 <template id="pageforum1.html">
 	<ons-page id="forum1">
-		<ons-toolbar>
-			<div class="left"><ons-back-button></ons-back-button></div>
-			<div class="center">
+		<ons-toolbar style="background-color: #f39c12;">
+			<div class="left"><ons-back-button style="color:#2C3E50;"></ons-back-button></div>
+			<div class="center" style="color:#2c3e50;">
 				Forums
 			</div>
 			<div class="right">
-		 <ons-toolbar-button onclick="fn.load('createnewdiscussion.html')" > + </ons-toolbar-button>
+		 <ons-toolbar-button onclick="fn.load('createnewdiscussion.html')" style="color:#2C3E50;" > + </ons-toolbar-button>
 	 </div>
 		</ons-toolbar>
 		<center><img src="img/forum1.png" alt="image" style="margin-top: 10px;"/></center>
 					<div style="text-align: center; margin-top: 20px;">
 				<h1> Introduction to Forum </h1>
-				<center><img src="img/forum.png" alt="image" style="margin-top: 10px;"/></center>
+				<center><img src="img/newforum.png" alt="image" style="margin-top: 10px; width:200px; height: 200px;"/></center>
 				<p>Welcome to Forum application. In here, you can share your ideas about
 	 				 the exist topics. Please introduce yourself, so we can know each other.
 				<p> </div>
+					<ons-list modifier="inset">
+		 <ons-list-header id="Addtime"></ons-list-header>
+
+		 <!-- The list will appear a small image or icon to indicate as a user-->
+		 <ons-list-item modifier="longdivider">
+			 <div class="left">
+        <img class="list-item__thumbnail" src="img/gwendahasnaa.jpg">
+      </div>
+      <div class="center">
+        <span class="list-item__title">
+						<h3 onclick="fn.load('userpage.html')">Gwenda Hasnaa Sarri</h3>
+				<hr></hr>
+				</span><span class="list-item__subtitle">Hi, my name is Gwenda Hasnaa Sarri. I am studying Bachelor of Information Technology
+	 			at Deakin University majoring Mobile and Apps Development and Interactive Media Design &hearts; &hearts; &hearts;
+				<hr></hr>
+
+				<!-- Another user can reply the user's post by clicking a Reply button.-->
+				<div style="float: right;">
+				<ons-button modifier="quiet" onclick="fn.load('createnewdiscussion.html')" style="color:#2C3E50;">Reply</ons-button>
+			</div>
+			</span>
+      </div>
+ 			</ons-list-item>
+	 </ons-list>
+					  </ons-page>
+</template>
+
+<!-- END OF A TOPIC PAGE -->
+
+<!-- A NEW TOPIC PAGE -->
+<!-- This page declares the information about the discussion topic when the user click from the list.
+ The user can create a new post related to the topic and reply another user's post. The template
+is similar to Forum Page.-->
+<template id="pageforum2.html">
+	<ons-page id="forum1">
+		<ons-toolbar style="background-color: #f39c12;">
+			<div class="left"><ons-back-button style="color:#2C3E50;"></ons-back-button></div>
+			<div class="center" style="color:#2c3e50;">
+				Forums
+			</div>
+			<div class="right">
+		 <ons-toolbar-button onclick="fn.load('createnewdiscussion.html')" style="color:#2C3E50;" > + </ons-toolbar-button>
+	 </div>
+		</ons-toolbar>
+		<center><img src="img/forum1.png" alt="image" style="margin-top: 10px;"/></center>
+					<div style="text-align: center; margin-top: 20px;">
+				<h1 id ="titleForum"></h1>
+				<center><img src="img/newforum.png" alt="image" style="margin-top: 10px; width:200px; height: 200px;"/></center>
+				<p id="descForum"><p> </div>
 					<ons-list modifier="inset">
 		 <ons-list-header>Wednesday, 2nd August 2017</ons-list-header>
 
@@ -233,7 +288,7 @@ is similar to Forum Page.-->
 
 				<!-- Another user can reply the user's post by clicking a Reply button.-->
 				<div style="float: right;">
-				<ons-button modifier="quiet" onclick="fn.load('createnewdiscussion.html')">Reply</ons-button>
+				<ons-button modifier="quiet" onclick="fn.load('createnewdiscussion.html')" style="color:#2C3E50;">Reply</ons-button>
 			</div>
 			</span>
       </div>
@@ -241,8 +296,7 @@ is similar to Forum Page.-->
 	 </ons-list>
 					  </ons-page>
 </template>
-
-<!-- END OF A TOPIC PAGE -->
+<!-- END OF A NEW TOPIC PAGE -->
 
 
 <!-- USER PAGE -->
@@ -251,9 +305,9 @@ Another user can follow them and send a direct message in personaly. This page w
 appear when the user click user's name in post discussion list. -->
 <template id="userpage.html">
 	<ons-page id="user">
-		<ons-toolbar>
-			<div class="left"><ons-back-button></ons-back-button></div>
-			<div class="center">
+		<ons-toolbar style="background-color: #f39c12;">
+			<div class="left"><ons-back-button style="color:#2C3E50;"></ons-back-button></div>
+			<div class="center" style="color:#2c3e50;">
 				Profile
 			</div>
 		</ons-toolbar>
@@ -265,8 +319,8 @@ appear when the user click user's name in post discussion list. -->
 						<p> Username: gwendaa26
 						<br> Email: gwendahasnaa26@gmail.com </br>
 					</p>
-				<ons-button>Follow</ons-button>
-				<ons-button>Direct Message</ons-button>
+				<ons-button id="button">Follow</ons-button>
+				<ons-button id="button">Direct Message</ons-button>
 </div>
 					  </ons-page>
 </template>
@@ -280,9 +334,9 @@ appear when the user click user's name in post discussion list. -->
 	 	 a new discussion by entering a title and description. Then, they can share it.-->
 <template id="createnew.html">
 	<ons-page id="create">
-		<ons-toolbar>
-			<div class="left"><ons-back-button></ons-back-button></div>
-			<div class="center">
+		<ons-toolbar style="background-color: #f39c12;">
+			<div class="left"><ons-back-button style="color:#2C3E50;"></ons-back-button></div>
+			<div class="center" style="color:#2c3e50;">
 				Create new thread
 			</div>
 		</ons-toolbar>
@@ -307,7 +361,7 @@ appear when the user click user's name in post discussion list. -->
 					 https://tutorial.onsen.io/?framework=vanilla&category=reference&module=dialog
 				 		-->
 			<div class="right" style="padding: 0 10px 10px; float: right;">
-				<ons-button onclick="ons.notification.confirm({message: 'Are you sure want to share?'})">Share</ons-button>
+				<ons-button id="button" onclick= "share()" >Share</ons-button>
 		</div>
 		</p>
 					  </ons-page>
@@ -321,9 +375,9 @@ appear when the user click user's name in post discussion list. -->
 		connects from an add button from a topic page, which used as a reply the discussion.-->
 <template id="createnewdiscussion.html">
 	<ons-page id="create">
-		<ons-toolbar>
+		<ons-toolbar style="background-color: #f39c12;">
 			<div class="left"><ons-back-button></ons-back-button></div>
-			<div class="center">
+			<div class="center" style="color:#2c3e50;">
 				Reply
 			</div>
 		</ons-toolbar>
@@ -338,7 +392,7 @@ appear when the user click user's name in post discussion list. -->
 			 <textarea class="textarea" id="description" ng-model="text" placeholder="Description" style="width: 100%; height: 100px;"></textarea>
 		 	</section>
 			<div class="right" style="padding: 0 10px 10px; float: right;">
-				<ons-button onclick="ons.notification.confirm({message: 'Are you sure want to share?'})">Share</ons-button>
+				<ons-button onclick="ons.notification.confirm({message: 'Are you sure want to share?'})" id="button">Share</ons-button>
 		</div>
 							</p>
 					  </ons-page>
@@ -352,18 +406,18 @@ appear when the user click user's name in post discussion list. -->
 		 the description and images for both sections.-->
 <ons-template id="about.html">
   <ons-page>
-    <ons-toolbar>
+    <ons-toolbar style="background-color: #f39c12;">
       <div class="left">
-        <ons-toolbar-button onclick="fn.open()">
+        <ons-toolbar-button onclick="fn.open()" style="color:#2C3E50;">
           <ons-icon icon="md-menu"></ons-icon>
         </ons-toolbar-button>-
       </div>
-      <div class="center">
+      <div class="center" style="color:#2c3e50;">
         About
       </div>
     </ons-toolbar>
 					<center><h1> Welcome to Forum </h1>
-						<img src="img/forum.png" alt="image">
+						<img src="img/icon.png" alt="image" style="width:150px; height:150px; ">
 					<p>Forum is an application that anyone can share their thoughts in
 						the list of discussion forums. In here, the user can find the useful information
 					 and knowledge as you needed.</p>
