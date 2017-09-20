@@ -6,8 +6,9 @@
 	<script src="js/onsenui.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/index.js"></script>
-	<meta charset="UTF-8">
 
+	<!--This code is to declare that my application can allow any language / emoji in text input. -->
+	<meta charset="UTF-8">
 
 	<!--
 	 Gwenda Hasnaa Sarri - 214441847
@@ -174,7 +175,7 @@ can join their new discussion. -->
 
 	 	<!-- The user can click one of the list to read the topic discussion. The idea or creating
 				 the list is from Onsen UI https://tutorial.onsen.io/?framework=vanilla&category=reference&module=list-->
-	 <ons-list-item modifier="chevron" onclick="fn.load('pageforum1.html')" tappable id ="addToList">
+	 <ons-list-item modifier="chevron" onclick="fn.load('pageforum1.html')" tappable>
 		 <h3 >Introduction to Forum </h3>
 		 <p >Welcome to Forum application. In here, you can share your ideas about
 				 the exist topics. Read more..</p>
@@ -185,14 +186,22 @@ can join their new discussion. -->
 	</ons-list-item>
  </ons-list>
 
- <ons-list modifier="inset" id ="addToList">
- <ons-list-header id="Addtime"></ons-list-header>
- <ons-list-item modifier="chevron" id="newForum" onclick = "fn.load('pageforum2.html')" tappable>
-  <h3 id="titleList"></h3>
-  <p id = "descriptionList"></p>
- </ons-list-item>
-</ons-list>
+<!--
+	These codes will show a new topic in the table list, when the user created a new topic.
+	It will show a current date. With day, dd/mmmm/yyyy format.
 
+for adding new list
+	https://codepen.io/frankdiox/pen/yOrdOV?editors=1010
+-->
+
+ <ons-list modifier="inset" id ="addToList">
+ <ons-list-header id="Addtime" ></ons-list-header>
+ <span class="list-item__title" id="titleList" style = "color:#2C3E50;
+ font-size: 1.17em;"></span>
+ <span class="list-item__subtitle" id = "descriptionList"></span>
+
+
+</ons-list>
 	</ons-page>
 </ons-template>
 
@@ -218,11 +227,11 @@ is similar to Forum Page.-->
 					<div style="text-align: center; margin-top: 20px;">
 				<h1> Introduction to Forum </h1>
 				<center><img src="img/newforum.png" alt="image" style="margin-top: 10px; width:200px; height: 200px;"/></center>
-				<p>Welcome to Forum application. In here, you can share your ideas about
+				<p contenteditable="true">Welcome to Forum application. In here, you can share your ideas about
 	 				 the exist topics. Please introduce yourself, so we can know each other.
 				<p> </div>
 					<ons-list modifier="inset">
-		 <ons-list-header id="Addtime"></ons-list-header>
+		 <ons-list-header id="Addtime">Wednesday, 2 August 2017</ons-list-header>
 
 		 <!-- The list will appear a small image or icon to indicate as a user-->
 		 <ons-list-item modifier="longdivider">
@@ -269,10 +278,9 @@ is similar to Forum Page.-->
 					<div style="text-align: center; margin-top: 20px;">
 				<h1 id ="titleForum"></h1>
 				<center><img src="img/newforum.png" alt="image" style="margin-top: 10px; width:200px; height: 200px;"/></center>
-				<p id="descForum"><p> </div>
+				<p id="descForum" contenteditable="true"><p> </div>
 					<ons-list modifier="inset">
-		 <ons-list-header>Wednesday, 2nd August 2017</ons-list-header>
-
+		 <ons-list-header id="Addtime">Wednesday, 2 August 2017</ons-list-header>
 		 <!-- The list will appear a small image or icon to indicate as a user-->
 		 <ons-list-item modifier="longdivider">
 			 <div class="left">
@@ -376,7 +384,7 @@ appear when the user click user's name in post discussion list. -->
 <template id="createnewdiscussion.html">
 	<ons-page id="create">
 		<ons-toolbar style="background-color: #f39c12;">
-			<div class="left"><ons-back-button></ons-back-button></div>
+			<div class="left"><ons-back-button style="color:#2C3E50;"></ons-back-button></div>
 			<div class="center" style="color:#2c3e50;">
 				Reply
 			</div>
@@ -392,7 +400,7 @@ appear when the user click user's name in post discussion list. -->
 			 <textarea class="textarea" id="description" ng-model="text" placeholder="Description" style="width: 100%; height: 100px;"></textarea>
 		 	</section>
 			<div class="right" style="padding: 0 10px 10px; float: right;">
-				<ons-button onclick="ons.notification.confirm({message: 'Are you sure want to share?'})" id="button">Share</ons-button>
+				<ons-button onclick="share()" id="button">Share</ons-button>
 		</div>
 							</p>
 					  </ons-page>

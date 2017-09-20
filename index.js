@@ -85,6 +85,8 @@ document.addEventListener('init', function(event) {
   }
 });
 
+
+
 //----------------------------------------------------------------------------
 
 function calledByClick(){
@@ -123,7 +125,6 @@ function register() {
   storage.setItem('regPassword', document.getElementById('regPassword').value);
 
 
-  // //---???
   //     if (document.getElementById('regUsername').value == "" && document.getElementById('regEmail').value == "" &&
   //     document.getElementById('regPassword').value == "" ) {
   //       ons.notification.alert("All fields are required")
@@ -140,19 +141,22 @@ function login(){
   var storedUsername = storage.getItem('regUsername');
   var storedEmail = storage.getItem('regEmail');
   var storedPassword = storage.getItem('regPassword');
+
   var encrypt = SHA256(storedPassword);
-storage.setItem(storedPassword,encrypt);
+  storage.setItem(storedPassword,encrypt);
+
   //entered data from the login page
   var username = document.getElementById ('username');
   var password = document.getElementById ('password');
-
-
 
   console.log (username.value, password.value, storedUsername, storedPassword);
 
   //check the stored data
   if (username.value == storedUsername && password.value == storedPassword) {
-    ons.notification.alert("Welcome " + document.getElementById('username').value + "!");
+    ons.notification.alert({
+      title: 'Forum Application',
+        message: "Welcome " + document.getElementById('username').value + "!",
+        buttonLabels: 'OK'})
      // The alert will show, when the user filled the true data as in the register page
      onclick = fn.load('home.html'); // It will go to the next page, when the login is successfully
   } else {
@@ -160,6 +164,15 @@ storage.setItem(storedPassword,encrypt);
  // The error alert will display, when the user didn't insert the username and password
   }
 }
+
+/* ----------
+  These codes below are for showing a forum post from the user. The steps are similar with
+  register and password above. A title and forum description will be saved in local storage.
+
+  inspired:
+
+*/
+
 
 var titlePost = document.getElementById('title');
 var descriptionPost = document.getElementById('description');
@@ -178,10 +191,16 @@ function share() {
   storage.setItem('titlePost', document.getElementById('title').value);
   storage.setItem('descriptionPost', document.getElementById('description').value);
 
+// for adding new list https://codepen.io/frankdiox/pen/yOrdOV?editors=1010
+//https://community.onsen.io/topic/391/onsen-2-with-jquery-and-loading-json-into-list/4
+  var list = document.querySelector('#addToList');
+  var newItem = document.createElement('ons-list-item');
+  newItem.setAttribute('modifier', "chevron");
+  newItem.setAttribute('tappable');
+  newItem.setAttribute('onclick',"fn.load('pageforum2.html')");
 
-  var list = document.querySelector('#newForum');
-  var newItem = document.createElement('ons-list');
-
+  newItem.innerHTML = "<span class='list-item__title' style='font-weight:bold;color:#2C3E50; font-size:1.5em'>" + document.getElementById("title").value + "</span>"
+                    + "<span class='list-item__subtitle' style='color:#000000'>" + document.getElementById("description").value + "</span>";
 
   if (document.getElementById('title').value == "" &&
   document.getElementById('description').value == "")
@@ -197,20 +216,22 @@ function share() {
               case 0:
                 break;
               case 1:
-              document.getElementById("Addtime").innerHTML = dayList[dayIndex] + ", " + date + " " + monthList[monthIndex] + " " + yearNow;
 
-              document.getElementById("titleList").innerHTML = document.getElementById('title').value;
-              document.getElementById("descriptionList").innerHTML = document.getElementById('description').value;
-              console.log (document.getElementById("titleList").innerHTML);
+              // It will show a date format in ons-list-header
+            document.getElementById("Addtime").innerHTML = dayList[dayIndex] + ", " + date + " " + monthList[monthIndex] + " " + yearNow;
+
                 break;
             }
           }
         });
       }
       list.appendChild(newItem);
-      console.log(document.createElement('ons-list-item'));
-
+      console.log(newItem.innerHTML);
 }
+
+
+
+
 
 /* ----------------------------------------------------------------------------
 
@@ -225,7 +246,39 @@ inspired:
     https://www.youtube.com/watch?v=Z_LhfDZABP4&feature=youtu.be
 ---------------------------------------------------------------------------- */
 
-window.baseUrl = "http://introtoapps.com/datastore.php?&appid=214441847"
+window.baseUrl = "http://introtoapps.com/datastore.php?&appid=214441847";
+
+window.currentUsername = null;
+window.forumTopics = [];
+
+
+function displayForumPage() {
+  for (var index = 0; index < forumTopics.length; index++) {
+    var topic = forumTopics[index];
+    $("body").append("<p>" + topic.title +" / " + topic.author + "</p>")
+  }
+
+  var newTopic = {
+    title: "Users",
+    author: window.currentUsername
+  }
+  forumTopics.push(newTopic);
+
+}
+function loadForumTopics() {
+  var url = baseUrl + "&action=load&objectid=forumstopics";
+
+  $.ajax ({ url: url, cache:false })
+    .done(function (data) {
+
+        alert("Server returned: " + data);
+        window.forumTopics = JSON.parse(data);
+        displayForumPage();
+
+    }).fail(function (jqXHR , textStatus) {
+      alert ("Request failed: " + textStatus);
+    });
+}
 
 function createUser (_username, _password, _email){
   var userObject = {
@@ -254,8 +307,6 @@ function createUser (_username, _password, _email){
 
 function loadUser(username) {
   var url = baseUrl + "&action=load&objectid=" + encodeURIComponent(username) + ".user";
-
-
   console.log(url);
   $.ajax ({
     url: url, cache:false })
@@ -269,11 +320,19 @@ function loadUser(username) {
 
   $(document).ready(function() {
     console.log ("My app is starting...");
+
+    //loadForumTopics();
+
     loadUser ("gwendahasnaa")
 
     //createUser ("gwendahasnaa", "12345","gwendahasnaa26@gmail.com")
 
   });
+
+
+//-----------------------------
+
+
 
   function SHA256(s){
   var chrsz   = 8;
