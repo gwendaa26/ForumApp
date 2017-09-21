@@ -200,7 +200,7 @@ function share() {
   newItem.setAttribute('onclick',"fn.load('pageforum2.html')");
 
   newItem.innerHTML = "<span class='list-item__title' style='font-weight:bold;color:#2C3E50; font-size:1.5em'>" + document.getElementById("title").value + "</span>"
-                    + "<span class='list-item__subtitle' style='color:#000000'>" + document.getElementById("description").value + "</span>";
+                    + "<span class='list-item__subtitle' style='color:#000000; padding-top: 15px;'>" + document.getElementById("description").value + "</span>";
 
   if (document.getElementById('title').value == "" &&
   document.getElementById('description').value == "")
@@ -228,6 +228,77 @@ function share() {
       list.appendChild(newItem);
       console.log(newItem.innerHTML);
 }
+
+var newTitlePost = document.getElementById('titleReply');
+var newDescriptionPost = document.getElementById('descriptionReply');
+
+
+function reply() {
+
+  storage.setItem('newTitlePost', document.getElementById('titleReply').value);
+  storage.setItem('newDescriptionPost', editorText.document.body.innerHTML);
+
+// for adding new list https://codepen.io/frankdiox/pen/yOrdOV?editors=1010
+//https://community.onsen.io/topic/391/onsen-2-with-jquery-and-loading-json-into-list/4
+
+  if (document.getElementById('titleReply').value == "" &&
+  editorText.document.body.innerHTML == "")
+ {
+    ons.notification.alert("All fields are required")
+      } else {
+        ons.notification.confirm({
+          title: 'Data shares',
+            message: 'Are you sure you want to share?',
+            buttonLabels: ['Discard', 'Save'],
+          callback: function(idx) {
+            switch (idx) {
+              case 0:
+                break;
+              case 1:
+
+              // It will show a date format in ons-list-header
+            document.getElementById("Addtime").innerHTML = dayList[dayIndex] + ", " + date + " " + monthList[monthIndex] + " " + yearNow;
+
+            document.getElementById("titleForum").innerHTML = document.getElementById("titleReply").value;
+            document.getElementById("descForum").innerHTML = editorText.document.body.innerHTML;
+
+                break;
+            }
+          }
+        });
+      }
+
+      console.log(document.getElementById("titleForum").innerHTML = document.getElementById("titleReply").value);
+}
+
+// to show to next page
+// http://jsfiddle.net/SrRSw/
+
+function enableEditMode() {
+  editorText = document.getElementById('descriptionReply').contentWindow;
+  editorText.document.designMode = "on"
+  editorText.document.open();
+  editorText.document.write('<head><style type="text/css">body{ font-family:Helvetica; font-size:14px;}</style></head>');
+  editorText.document.close();
+  editorText.document.addEventListener('keyup',showTextEditor, false);
+  editorText.document.addEventListener('paste', showTextEditor, false);
+}
+function showTextEditor () {
+    document.getElementById('descForum').innerHTML = editorText.document.body.innerHTML;
+    return;
+}
+
+// ----------------
+
+function execCmd(command) {
+  richTextField.document.execCommand(command, false, null);
+  richTextField.document.execCommand(command, false, null);
+  richTextField.document.execCommand(command, false, null);
+
+}
+
+
+
 
 
 
@@ -320,11 +391,10 @@ function loadUser(username) {
 
   $(document).ready(function() {
     console.log ("My app is starting...");
-
     //loadForumTopics();
 
-    loadUser ("gwendahasnaa")
 
+    loadUser ("gwendahasnaa")
     //createUser ("gwendahasnaa", "12345","gwendahasnaa26@gmail.com")
 
   });

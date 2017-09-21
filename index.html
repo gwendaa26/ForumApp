@@ -3,6 +3,7 @@
 	<link rel="stylesheet" href="css/onsenui.css">
 	<link rel="stylesheet" href="css/onsen-css-components.min.css">
 	<link rel="stylesheet" href="css/index.css">
+
 	<script src="js/onsenui.min.js"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/index.js"></script>
@@ -187,13 +188,13 @@ can join their new discussion. -->
  </ons-list>
 
 <!--
-	These codes will show a new topic in the table list, when the user created a new topic.
-	It will show a current date. With day, dd/mmmm/yyyy format.
-
-for adding new list
+	These codes will show a new topic in the table list, when the user click + button to create
+	a new topic.
+	In a table, it will show a current date. With day, dd/mmmm/yyyy format.
+	The function will work in javascript file.
+	for adding new list
 	https://codepen.io/frankdiox/pen/yOrdOV?editors=1010
 -->
-
  <ons-list modifier="inset" id ="addToList">
  <ons-list-header id="Addtime" ></ons-list-header>
  <span class="list-item__title" id="titleList" style = "color:#2C3E50;
@@ -278,31 +279,24 @@ is similar to Forum Page.-->
 					<div style="text-align: center; margin-top: 20px;">
 				<h1 id ="titleForum"></h1>
 				<center><img src="img/newforum.png" alt="image" style="margin-top: 10px; width:200px; height: 200px;"/></center>
-				<p id="descForum" contenteditable="true"><p> </div>
-					<ons-list modifier="inset">
-		 <ons-list-header id="Addtime">Wednesday, 2 August 2017</ons-list-header>
-		 <!-- The list will appear a small image or icon to indicate as a user-->
-		 <ons-list-item modifier="longdivider">
-			 <div class="left">
-        <img class="list-item__thumbnail" src="img/gwendahasnaa.jpg">
       </div>
-      <div class="center">
-        <span class="list-item__title">
-						<h3 onclick="fn.load('userpage.html')">Gwenda Hasnaa Sarri</h3>
-				<hr></hr>
-				</span><span class="list-item__subtitle">Hi, my name is Gwenda Hasnaa Sarri. I am studying Bachelor of Information Technology
-	 			at Deakin University majoring Mobile and Apps Development and Interactive Media Design
-				<hr></hr>
 
-				<!-- Another user can reply the user's post by clicking a Reply button.-->
-				<div style="float: right;">
-				<ons-button modifier="quiet" onclick="fn.load('createnewdiscussion.html')" style="color:#2C3E50;">Reply</ons-button>
-			</div>
-			</span>
-      </div>
- 			</ons-list-item>
-	 </ons-list>
-					  </ons-page>
+      <p id="descForum" contenteditable="true" style="margin-left: 20px; font-size: 14px"></p>
+
+        <center><ons-button onclick="fn.load('createnewdiscussion.html')" id="button" style="margin-bottom: 10px">Reply</ons-button></center>
+
+        	<ons-list modifier="inset" id="newAddList">
+		 			<ons-list-header id="AddNewtime"></ons-list-header>
+          <span class="list-item__title" id="newTitleList"></span>
+					<hr></hr>
+					</span><span class="list-item__subtitle" id="newDescList"></span>
+					<hr></hr>
+					<!-- Another user can reply the user's post by clicking a Reply button.-->
+					<div style="float: right;">
+					<ons-button modifier="quiet" onclick="fn.load('createnewdiscussion.html')" style="color:#2C3E50;">Reply</ons-button>
+					</div>
+		 			</ons-list>
+						  </ons-page>
 </template>
 <!-- END OF A NEW TOPIC PAGE -->
 
@@ -394,15 +388,26 @@ appear when the user click user's name in post discussion list. -->
 					<div style="text-align: center; margin-top: 50px; ">
 				</div>
 				<section style="padding: 0 10px 10px;">
-				<ons-input id="title" modifier="underbar" placeholder="Title" style="width: 100%;" float></ons-input>
-				<p> </section>
+				<ons-input id="titleReply" modifier="underbar" placeholder="Title" style="width: 100%;" float></ons-input>
+
+
+<!--
+rich text editor : https://www.youtube.com/watch?v=Z_xN5oo_hqY&t=395s
+-->
+
+        </section>
+          <ons-button  onclick="execCmd('<h1></h1>')" id="headingText" style="margin-left: 10px;">Heading</ons-button>
+          <ons-button  onclick="execCmd('bold')" id="boldText">Bold</ons-button>
+					<ons-button  onclick="execCmd('insertOrderedList')" id="bulletsText">Bullets</ons-button>
+
 					<section style="padding: 0 10px 10px;">
-			 <textarea class="textarea" id="description" ng-model="text" placeholder="Description" style="width: 100%; height: 100px;"></textarea>
-		 	</section>
+			 <iframe onload="enableEditMode()" class="textarea" name = "richTextField" id="descriptionReply" style="width: 100%; height: 100px; margin-top:10px">
+       </iframe>
+     	</section>
 			<div class="right" style="padding: 0 10px 10px; float: right;">
-				<ons-button onclick="share()" id="button">Share</ons-button>
+				<ons-button onclick="reply()" id="button">Share</ons-button>
 		</div>
-							</p>
+
 					  </ons-page>
 </template>
 
