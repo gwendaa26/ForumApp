@@ -56,12 +56,15 @@ window.fn.open = function() {
   menu.open();
 };
 
-window.fn.load = function(page,data) {
+
+window.fn.load = function(page, data) {
   var content = document.getElementById('myNavigator');
   var menu = document.getElementById('menu');
   content.pushPage(page, data)
-    .then(menu.close.bind(menu));
+  .then(menu.close.bind(menu));
+
 };
+
 
 window.fn.pop = function() {
   var content = document.getElementById('myNavigator');
@@ -142,6 +145,8 @@ function login(){
   var storedEmail = storage.getItem('regEmail');
   var storedPassword = storage.getItem('regPassword');
 
+  //These two codes are used to apply an encryption for user's password using SHA256.
+  //So, the user's password will secure. The output will show as a string. 
   var encrypt = SHA256(storedPassword);
   storage.setItem(storedPassword,encrypt);
 
@@ -165,12 +170,18 @@ function login(){
   }
 }
 
+
 /* ----------
   These codes below are for showing a forum post from the user. The steps are similar with
   register and password above. A title and forum description will be saved in local storage.
 
-  inspired:
+  inspired: (using local storage)
+  https://developer.mozilla.org/en-US/docs/Web/API/Storage
+  https://www.daniweb.com/digital-media/ui-ux-design/threads/476533/login-and-registration-using-local-storage
+  https://stackoverflow.com/questions/34299555/javascript-login-register-with-localstorage
 
+  In this code, it will appear a new discussion list, when the user clicked + button to create a new discussion topic.
+  It also shows a current date.
 */
 
 
@@ -191,14 +202,23 @@ function share() {
   storage.setItem('titlePost', document.getElementById('title').value);
   storage.setItem('descriptionPost', document.getElementById('description').value);
 
-// for adding new list https://codepen.io/frankdiox/pen/yOrdOV?editors=1010
-//https://community.onsen.io/topic/391/onsen-2-with-jquery-and-loading-json-into-list/4
-  var list = document.querySelector('#addToList');
-  var newItem = document.createElement('ons-list-item');
-  newItem.setAttribute('modifier', "chevron");
-  newItem.setAttribute('tappable');
-  newItem.setAttribute('onclick',"fn.load('pageforum2.html')");
+/*
+  These codes below is for adding a new disucssion topic, which can be showed in a table list.
+  inspired:
 
+  https://codepen.io/frankdiox/pen/yOrdOV?editors=1010
+  https://community.onsen.io/topic/391/onsen-2-with-jquery-and-loading-json-into-list/4
+*/
+
+
+//This code is to identify ons-list that used to add a detail, such as ons-list-item which can be tapped to go to next page.                                                 //
+  var list = document.querySelector('#addToList');
+  var newItem = document.createElement('ons-list-item'); // This code is used to add ons-list-item in ons-list
+      newItem.setAttribute('modifier', "chevron");
+      newItem.setAttribute('tappable');
+      newItem.setAttribute('onclick',"fn.load('pageforum2.html')");
+
+  // This code is used to declare inside of ons-list-item
   newItem.innerHTML = "<span class='list-item__title' style='font-weight:bold;color:#2C3E50; font-size:1.5em'>" + document.getElementById("title").value + "</span>"
                     + "<span class='list-item__subtitle' style='color:#000000; padding-top: 15px;'>" + document.getElementById("description").value + "</span>";
 
@@ -217,29 +237,43 @@ function share() {
                 break;
               case 1:
 
-              // It will show a date format in ons-list-header
+            // It will show a current date with a custom format (Day, dd/mmmm.=/yyyy in ons-list-header
             document.getElementById("Addtime").innerHTML = dayList[dayIndex] + ", " + date + " " + monthList[monthIndex] + " " + yearNow;
-
                 break;
             }
           }
         });
       }
+      //This is the main code from add a new list, because it can show several ons-list-item(s)
       list.appendChild(newItem);
+
       console.log(newItem.innerHTML);
 }
+
+/*
+  These codes below is for editing a new disucssion topic, which can be showed in a forum discussion page.
+  The steps are similar with the previous one. However, in this code is embedded a function for rich text editor to implement
+  BOLD, BULLETS, and INSERT A LINK AND IMAGE.
+
+  inspired:
+  (add a new list)
+  https://codepen.io/frankdiox/pen/yOrdOV?editors=1010
+  https://community.onsen.io/topic/391/onsen-2-with-jquery-and-loading-json-into-list/4
+
+  (Rich text editor)
+  VerkkoNet Programming Tutorials :
+  Rich Text Editor in JS - Part 1/3 | WYSIWYG html editor | Javascript tutorial
+  https://www.youtube.com/watch?v=Z_xN5oo_hqY&t=395s
+
+*/
+
 
 var newTitlePost = document.getElementById('titleReply');
 var newDescriptionPost = document.getElementById('descriptionReply');
 
-
-function reply() {
-
+function edit() {
   storage.setItem('newTitlePost', document.getElementById('titleReply').value);
   storage.setItem('newDescriptionPost', editorText.document.body.innerHTML);
-
-// for adding new list https://codepen.io/frankdiox/pen/yOrdOV?editors=1010
-//https://community.onsen.io/topic/391/onsen-2-with-jquery-and-loading-json-into-list/4
 
   if (document.getElementById('titleReply').value == "" &&
   editorText.document.body.innerHTML == "")
@@ -256,52 +290,112 @@ function reply() {
                 break;
               case 1:
 
-              // It will show a date format in ons-list-header
+            // It will show a current date with a custom format (Day, dd/mmmm.=/yyyy in ons-list-header
             document.getElementById("Addtime").innerHTML = dayList[dayIndex] + ", " + date + " " + monthList[monthIndex] + " " + yearNow;
 
+            // It will show the data from edit page to forum discussion page.
             document.getElementById("titleForum").innerHTML = document.getElementById("titleReply").value;
             document.getElementById("descForum").innerHTML = editorText.document.body.innerHTML;
-
-                break;
+            break;
             }
           }
         });
       }
-
       console.log(document.getElementById("titleForum").innerHTML = document.getElementById("titleReply").value);
 }
 
-// to show to next page
-// http://jsfiddle.net/SrRSw/
+/*
+  These codes below show how the data from iframe, which embedded with rich text editor can be brought to
+  the next page (forum discussion page.)
+  inspired:
+  http://jsfiddle.net/SrRSw/
+*/
 
 function enableEditMode() {
-  editorText = document.getElementById('descriptionReply').contentWindow;
-  editorText.document.designMode = "on"
+  editorText = document.getElementById('descriptionReply').contentWindow; // It identifies an iframe as a rich text editor.
+  editorText.document.designMode = "on" // It means that an iframe can be editable.
   editorText.document.open();
   editorText.document.write('<head><style type="text/css">body{ font-family:Helvetica; font-size:14px;}</style></head>');
   editorText.document.close();
   editorText.document.addEventListener('keyup',showTextEditor, false);
   editorText.document.addEventListener('paste', showTextEditor, false);
 }
+
+//These code is used to show the data from iframe, can be brought to a description of forum discussion page.
 function showTextEditor () {
     document.getElementById('descForum').innerHTML = editorText.document.body.innerHTML;
     return;
 }
 
-// ----------------
-
+// This code is used to execute the button to show BOLD and BULLETS=
 function execCmd(command) {
   richTextField.document.execCommand(command, false, null);
-  richTextField.document.execCommand(command, false, null);
-  richTextField.document.execCommand(command, false, null);
+}
 
+//This code is similar with the code above, but it only show for a link. (URL and Image)
+function execCmdWithArg(command, arg) {
+  richTextField.document.execCommand(command, false, arg);
 }
 
 
+/*
+These codes are for replying from a discussion post. It is similar with edit() codes.
+*/
+var replyTitlePost = document.getElementById('titleNew');
+var replyDescriptionPost = document.getElementById('descNew');
+function reply() {
+  storage.setItem('replyTitlePost', document.getElementById('titleNew').value);
+  storage.setItem('replyDescriptionPost', editorTextNew.document.body.innerHTML);
 
+  // for adding new list https://codepen.io/frankdiox/pen/yOrdOV?editors=1010
+  //https://community.onsen.io/topic/391/onsen-2-with-jquery-and-loading-json-into-list/4
 
+  var list = document.querySelector('#newAddList');
+  var newItemDiscuss = document.createElement('ons-list-item');
 
+  // This code is used to declare inside of ons-list-item
+  newItemDiscuss.innerHTML = "<span class='list-item__title' style='font-weight:bold;color:#2C3E50; font-size:1.5em'>" + document.getElementById('titleNew').value + "</span>"
+                            + "<span class='list-item__subtitle' style='margin-top: 10px'>" + editorTextNew.document.body.innerHTML + "</span>"
 
+  if (document.getElementById('titleNew').value == "" &&
+  editorTextNew.document.body.innerHTML == "")
+ {
+    ons.notification.alert("All fields are required")
+      } else {
+        ons.notification.confirm({
+          title: 'Data shares',
+            message: 'Are you sure you want to share?',
+            buttonLabels: ['Discard', 'Save'],
+          callback: function(idx) {
+            switch (idx) {
+              case 0:
+                break;
+              case 1:
+              // It will show a date format in ons-list-header
+            document.getElementById("AddNewtime").innerHTML = dayList[dayIndex] + ", " + date + " " + monthList[monthIndex] + " " + yearNow;
+                break;
+           }
+          }
+        });
+      }
+      //This is the main code from add a new list, because it can show several ons-list-item(s)
+      list.appendChild(newItemDiscuss);
+}
+
+/*
+  These codes below show how the data from iframe, which embedded with rich text editor can be brought to
+  the next page (forum discussion page.)
+  inspired:
+  http://jsfiddle.net/SrRSw/
+*/
+
+function enableEditModeReply() {
+  editorTextNew = document.getElementById('descNew').contentWindow;
+  editorTextNew.document.designMode = "on"
+  editorTextNew.document.open();
+  editorTextNew.document.write('<head><style type="text/css">body{ font-family:Helvetica; font-size:14px;}</style></head>');
+  editorTextNew.document.close();
+}
 
 
 /* ----------------------------------------------------------------------------
@@ -392,17 +486,19 @@ function loadUser(username) {
   $(document).ready(function() {
     console.log ("My app is starting...");
     //loadForumTopics();
-
-
     loadUser ("gwendahasnaa")
     //createUser ("gwendahasnaa", "12345","gwendahasnaa26@gmail.com")
 
   });
 
 
-//-----------------------------
+/*
 
-
+These code below is declaring the code for encrypting SHA256. The user's password will be encrypted by using these codes.
+inspired:
+The original code by Angel Marin, Paul Johnston
+http://coursesweb.net/javascript/sha256-encrypt-hash_cs
+*/
 
   function SHA256(s){
   var chrsz   = 8;
